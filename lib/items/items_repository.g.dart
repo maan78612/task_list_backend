@@ -2,6 +2,7 @@
 
 // to generate this file run command after making model class
 // [dart run build_runner build]
+//package name: json_serializable: ^6.7.1
 
 part of 'items_repository.dart';
 

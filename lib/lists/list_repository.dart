@@ -51,10 +51,12 @@ class TaskListRepository {
   Map<String, dynamic> getAllLists() {
     final formattedList = <String, dynamic>{};
     if (listDb.isNotEmpty) {
-      listDb.forEach((String id) {
-        final currentList = listDb[id];
-        formattedList[id] = currentList?.toJson();
-      } as void Function(String key, TaskList value));
+      listDb.forEach(
+        (String id) {
+          final currentList = listDb[id];
+          formattedList[id] = currentList?.toJson();
+        } as void Function(String key, TaskList value),
+      );
     }
     return formattedList;
   }
@@ -85,6 +87,6 @@ class TaskListRepository {
       return Future.error(Exception('List not found'));
     }
 
-    listDb[id] = TaskList(id: id, name: name); 
+    listDb[id] = TaskList(id: id, name: name);
   }
 }
