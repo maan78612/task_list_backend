@@ -29,11 +29,13 @@ Future<Response> _getLists(RequestContext context) async {
     }
   });
 
+  /// create response model
   responseModel = ResponseModel(
     statusCode: HttpStatus.accepted,
     success: true,
     data: list,
   );
+  /// return response model as json
   return Response.json(
     statusCode: HttpStatus.accepted,
     body: responseModel.toJson(),
@@ -41,10 +43,13 @@ Future<Response> _getLists(RequestContext context) async {
 }
 
 Future<Response> _createList(RequestContext context) async {
+  /// get body coming from user and save it as Map<String, dynamic>
   final body = await context.request.json() as Map<String, dynamic>;
   final name = body['name'] as String;
   final id = DateTime.now().millisecondsSinceEpoch.toString();
   final task = TaskList(id: id, name: name);
+
+  /// add data to Firebase
   await FBCollections.taskList.document(task.id).set(task.toJson());
 
   final responseModel = ResponseModel(
