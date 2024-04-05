@@ -7,7 +7,7 @@ import 'package:task_list_backend/model/error_model.dart';
 
 /*----------------------------------------
   Command to generate middleware
-  [ dart_frog new route "/db/fire_base""]
+  [ dart_frog new route "/db/firebase""]
  ----------------------------------------*/
 
 

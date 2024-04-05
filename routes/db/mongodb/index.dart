@@ -37,7 +37,7 @@ Future<Response> _getList(RequestContext context) async {
 }
 
 Future<Response> _createList(RequestContext context) async {
-  final ResponseModel responseModel;
+   ResponseModel responseModel;
 
   /// get body coming from user and save it as Map<String, dynamic>
   final body = await context.request.json() as Map<String, dynamic>;
@@ -46,20 +46,25 @@ Future<Response> _createList(RequestContext context) async {
   final task = TaskList(id: id, name: name);
 
   /// add data to Mongodb
-  final result =
-      await context.read<Db>().collection('lists').insertOne(task.toJson());
-
-
-  if (result.isSuccess) {
+  try {
+    final result =
+        await context.read<Db>().collection('lists').insertOne(task.toJson());
+    if (!result.isSuccess) {
+      responseModel = ResponseModel(
+        statusCode: HttpStatus.created,
+        success: true,
+        data: task.toJson(),
+      );
+    } else {
+      responseModel = ResponseModel(
+        statusCode: HttpStatus.notAcceptable,
+        errorModel: ['Item not created !'],
+      );
+    }
+  } catch (e) {
     responseModel = ResponseModel(
-      statusCode: HttpStatus.created,
-      success: true,
-      data: task.toJson(),
-    );
-  } else {
-    responseModel = ResponseModel(
-      statusCode: HttpStatus.notAcceptable,
-      errorModel: ['Item not created !'],
+      statusCode: HttpStatus.badRequest,
+      errorModel: ['Unknown error occurred'],
     );
   }
 
